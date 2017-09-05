@@ -3,6 +3,8 @@ import * as config from 'config';
 import * as bodyParser from 'body-parser';
 import * as cors from 'cors';
 
+import { Auth } from './lib/auth';
+
 const env = config.get<string>('env');
 
 const app = express();
@@ -16,8 +18,17 @@ app.use(corsSetting);
 
 app.use(bodyParser.json());
 
-app.use('/', (req, res) => {
-  res.send('hello');
+app.use('/', async (req, res) => {
+  try {
+    const provider = await Auth.getProvider(config.get<string>('okta.discover'));
+    const authorizationHeader = req.header('Authorization');
+    const token = authorizationHeader.split(' ')[1];
+    const result = await provider.verify(token);
+    res.send(JSON.parse(result));
+  } catch (err) {
+    console.log(err);
+    res.status(400).send(err);
+  }
 });
 
 const port = config.get<string>('port')

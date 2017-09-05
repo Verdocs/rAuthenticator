@@ -4,5 +4,26 @@
   "cors": {
     "origin": "",
     "credentials": true
+  },
+  "services": {
+    "rform": {
+      "address": "",
+      "clientId": ""
+    },
+    "rcommon": {
+      "address": "",
+      "clientId": ""
+    },
+    "rhome": {
+      "address": "",
+      "clientId": ""
+    },
+    "rAccount": {
+      "address": "",
+      "clientId": ""
+    }
+  },
+  "okta": {
+    "discover": ""
   }
 }
