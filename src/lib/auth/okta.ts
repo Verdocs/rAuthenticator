@@ -3,7 +3,7 @@ import * as jose from 'node-jose';
 
 import { IDiscovery, IJWK } from './discovery';
 
-export class Okta {
+export class AuthProvider {
   private discoveryResult: IDiscovery;
   private keyStore: any;
 
@@ -31,14 +31,14 @@ export class Okta {
   }
 
   public async verify(token: any) {
-    try{
-    const result = await jose.JWS.createVerify(this.keyStore).verify(token);
-    const payload = result.payload as Buffer;
-    return payload.toString();
-    }catch(err){
+    try {
+      const result = await jose.JWS.createVerify(this.keyStore).verify(token);
+      const payload = result.payload as Buffer;
+      return payload.toString();
+    } catch (err) {
       return Promise.reject({
         error: 'Not a Valid Token'
-      })
+      });
     }
   }
 

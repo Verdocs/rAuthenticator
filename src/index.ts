@@ -18,17 +18,12 @@ app.use(corsSetting);
 
 app.use(bodyParser.json());
 
-app.use('/', async (req, res) => {
-  try {
-    const provider = await Auth.getProvider(config.get<string>('okta.discover'));
-    const authorizationHeader = req.header('Authorization');
-    const token = authorizationHeader.split(' ')[1];
-    const result = await provider.verify(token);
-    res.send(JSON.parse(result));
-  } catch (err) {
-    console.log(err);
-    res.status(400).send(err);
-  }
+app.use(Auth.middleWare);
+
+app.use('/', (req, res) => {
+  res.send({
+    hello: 'From the other side'
+  });
 });
 
 const port = config.get<string>('port')
