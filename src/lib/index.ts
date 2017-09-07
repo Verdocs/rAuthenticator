@@ -1,13 +1,13 @@
 import * as request from 'request';
 
-import { IDiscovery } from './discovery';
-
 import { AuthProvider } from './okta';
 
+import { IClient, IDiscovery } from './client.interface';
+
 export class Auth {
-  public static async getProvider(discoverUrl: string) {
-    const discovery = await this.discover(discoverUrl);
-    const okta = new AuthProvider(discovery);
+  public static async getProvider(client: IClient) {
+    client.discovery = await this.discover(client.discoverUrl);
+    const okta = new AuthProvider(client);
     return okta;
   }
 

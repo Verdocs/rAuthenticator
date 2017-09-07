@@ -1,6 +1,6 @@
 {
   "name": "rokta",
-  "version": "0.0.1-beta.1",
+  "version": "0.0.1-beta.3",
   "description": "This module is a middleware for express to verify tokens with interospect of okta",
   "author": "",
   "repository": {
@@ -22,18 +22,19 @@
     "request": "^2.81.0"
   },
   "devDependencies": {
-    "@types/mocha": "^2.2.42",
     "@types/chai": "^4.0.4",
-    "@types/node": "^8.0.26",
-    "@types/request": "^2.0.3",
+    "@types/config": "0.0.32",
+    "@types/cookie-parser": "^1.4.1",
     "@types/express": "^4.0.37",
     "@types/express-serve-static-core": "^4.0.50",
-    "@types/cookie-parser": "^1.4.1",
+    "@types/mocha": "^2.2.42",
+    "@types/node": "^8.0.26",
+    "@types/request": "^2.0.3",
+    "chai": "^4.1.2",
+    "config": "^1.26.2",
+    "cookie-parser": "^1.4.3",
     "express": "^4.15.4",
     "mocha": "^3.5.0",
-    "chai": "^4.1.2",
-    "cookie-parser": "^1.4.3",
-    "rokta": "^0.0.1-beta.1",
     "supertest": "^3.0.0",
     "typescript": "^2.5.2"
   },

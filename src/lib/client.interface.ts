@@ -6,3 +6,10 @@ export interface IDiscovery {
   jwks_uri: string;
   introspection_endpoint: string;
 }
+
+export interface IClient {
+  discoverUrl: string;
+  discovery?: IDiscovery
+  clientId: string;
+  clientSecret: string;
+}
