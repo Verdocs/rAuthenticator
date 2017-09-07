@@ -12,6 +12,7 @@
         "outDir": "dist"
     },
     "files": [
-        "src/index.ts"
+        "src/index.ts",
+        "test/server.test.ts"
     ]
 }

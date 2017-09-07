@@ -1,5 +1,4 @@
 import * as request from 'request';
-import * as config from 'config';
 
 import { IDiscovery } from './discovery';
 

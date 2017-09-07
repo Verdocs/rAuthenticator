@@ -4,3 +4,5 @@ node_modules
 package-lock.json
 tsconfig.json
 src
+dist/test
+dist/lib

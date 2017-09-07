@@ -1,4 +1,5 @@
 import { Auth } from './lib';
+import * as jwt from 'jwt-decode';
 
 export class RealsterOkta {
   private disvcoverUrl: string;
@@ -14,6 +15,8 @@ export class RealsterOkta {
     const verifiedIdToken = await auth.verify(idToken, 'id_token');
     const verifiedAccessToken = await auth.verify(accessToken, 'access_token');
     if (verifiedIdToken && verifiedAccessToken) {
+      req.access_token = jwt.decode(accessToken);
+      req.id_token = jwt.decode(idToken);
       next();
     } else {
       next({
