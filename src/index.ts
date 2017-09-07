@@ -1,5 +1,5 @@
 import { Auth } from './lib';
-import * as jwt from 'jwt-decode';
+import * as jwtdecode from 'jwt-decode';
 
 import { IClient } from './lib/client.interface';
 
@@ -15,8 +15,8 @@ export class RealsterOkta {
           const verifiedAccessToken = await auth.verify(accessToken, 'access_token');
 
           if (verifiedIdToken && verifiedAccessToken) {
-            req.access_token = jwt.decode(accessToken);
-            req.id_token = jwt.decode(idToken);
+            req.access_token = jwtdecode(accessToken);
+            req.id_token = jwtdecode(idToken);
             next();
           } else {
             res.status(401).send({

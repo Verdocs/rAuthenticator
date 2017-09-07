@@ -16,11 +16,11 @@ const client = {
 app.use(auth.cookie(client))
 
 app.use('/', (req, res) => {
-  // console.log(req.cookies);
-  res.status(200).send({
+  let result = {
     access_token: req['access_token'],
     id_token: req['id_token']
-  });
+  }
+  res.status(200).send(result);
 });
 
 export { app };
