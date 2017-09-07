@@ -1,6 +1,6 @@
 {
   "name": "rokta",
-  "version": "0.0.1-beta.3",
+  "version": "0.0.1-beta.4",
   "description": "This module is a middleware for express to verify tokens with interospect of okta",
   "author": "",
   "repository": {
