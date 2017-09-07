@@ -6,12 +6,3 @@ export interface IDiscovery {
   jwks_uri: string;
   introspection_endpoint: string;
 }
-
-export interface IJWK {
-    alg: string;
-    e: string;
-    n: string;
-    kid: string;
-    kty: string;
-    use: string;
-}

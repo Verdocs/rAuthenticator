@@ -1,25 +1,22 @@
 {
-  "name": "rgateway",
-  "version": "1.0.0",
-  "description": "",
+  "name": "rOkta",
+  "version": "0.0.1-beta.1",
+  "description": "This module is a middleware for express to verify tokens with interospect of okta",
+  "author": "AmirSaber Sharifi",
   "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "scripts": {
+    "prepublish": "npm run build",
     "start": "node dist/index.js",
+    "build": "tsc",
     "tsc:watch": "tsc -w"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "body-parser": "^1.17.2",
-    "config": "^1.26.2",
-    "cors": "^2.8.4",
-    "express": "^4.15.4",
-    "node-jose": "^0.9.5",
     "request": "^2.81.0"
   },
   "devDependencies": {
-    "@types/config": "0.0.32",
-    "@types/express": "^4.0.37",
     "@types/node": "^8.0.26",
     "@types/request": "^2.0.3",
     "typescript": "^2.5.2"

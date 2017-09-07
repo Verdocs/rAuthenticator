@@ -5,6 +5,7 @@
         "removeComments": true,
         "sourceMap": true,
         "skipLibCheck": true,
+        "declaration": true,
         "lib": [
             "es6"
         ],
