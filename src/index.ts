@@ -3,30 +3,40 @@ import * as jwtdecode from 'jwt-decode';
 
 import { IClient } from './lib/client.interface';
 
-export class RealsterOkta {
-
-  public static cookie(options: IClient) {
+class RealsterOkta {
+  public static cookie(client: IClient, tokenNames: string[]) {
     return function (req, res, next) {
-      Auth.getProvider(options).then(async (auth) => {
-        const idToken = req.cookies['id_token'];
-        const accessToken = req.cookies['access_token'];
+      Auth.getProvider(client).then(async (auth) => {
+        const result = [];
         try {
-          const verifiedIdToken = await auth.verify(idToken, 'id_token');
-          const verifiedAccessToken = await auth.verify(accessToken, 'access_token');
-
-          if (verifiedIdToken && verifiedAccessToken) {
-            req.access_token = jwtdecode(accessToken);
-            req.id_token = jwtdecode(idToken);
-            next();
-          } else {
-            res.status(401).send({
-              'Error': 'Not Authenticated'
-            })
+          for (const tokenName of tokenNames) {
+            const token = req.cookies[tokenName];
+            const verifiedToken = await auth.verify(token, tokenName);
+            if (verifiedToken) {
+              result.push({
+                name: tokenName,
+                verified: true,
+                decoded: jwtdecode(token)
+              });
+            } else {
+              result.push({
+                name: tokenName,
+                verified: false,
+                decoded: null
+              });
+            }
           }
+          req.verifiedCookies = result;
+          next();
         } catch (err) {
-          console.log(err);
+          next({
+            code: 500,
+            error: err
+          });
         }
       });
     }
   }
 }
+
+export { IClient, RealsterOkta };

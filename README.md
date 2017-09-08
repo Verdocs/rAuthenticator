@@ -5,10 +5,14 @@ This module is a middleware for express to verify tokens with interospect of okt
 
 ## Usage
 ```javascript
-import { RealsterOkta } from 'RealsterOkta';
+const app = express();
+app.use(cookieParser());
 
-const discoverUrl = 'disvoery url goes here';
-const auth = new RealsterOkta(discoveryUrl);
+const client: IClient = {
+  discoverUrl: 'oAuth disvoery url goes here',
+  clientId: 'clientId for using in interospect call',
+  clientSecret: 'clientSecret for using in interospect call'
+}
 
-express.use(auth.cookie);
+app.use(auth.cookie(client, ['id_token', 'access_token']));
 ```

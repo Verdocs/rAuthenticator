@@ -1,6 +1,7 @@
 import * as chai from 'chai';
 import * as request from 'supertest';
 import * as config from 'config';
+import * as _ from 'lodash';
 
 import { app } from './server';
 
@@ -9,11 +10,16 @@ describe('Test Express Server', () => {
     request(app)
       .get('/')
       .set('Cookie', ['access_token=12345667', 'id_token=blah'])
-      .expect(401)
+      .expect(200)
       .end((err, response) => {
         if (err) {
           return done(err);
         } else {
+          const body = response.body;
+          const idTokenResult = _.find<any>(body, {name: 'id_token'});
+          const accessTokenResult = _.find<any>(body, {name: 'access_token'});
+          chai.expect(idTokenResult.verified).to.be.equal(false);
+          chai.expect(accessTokenResult.verified).to.be.equal(false);
           done();
         }
       });
@@ -31,8 +37,10 @@ describe('Test Express Server', () => {
           return done(err);
         } else {
           const body = response.body;
-          chai.expect(body.access_token).to.exist;
-          chai.expect(body.id_token).to.exist;
+          const idTokenResult = _.find<any>(body, {name: 'id_token'});
+          const accessTokenResult = _.find<any>(body, {name: 'access_token'});
+          chai.expect(idTokenResult.verified).to.be.equal(true);
+          chai.expect(accessTokenResult.verified).to.be.equal(true);
           done();
         }
       });
