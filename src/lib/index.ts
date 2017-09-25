@@ -1,27 +1,59 @@
 import * as request from 'request';
 
-import { AuthProvider } from './okta';
+import { AuthProvider } from './rSecure';
 
-import { IClient, IDiscovery } from './client.interface';
+import { IValidResponse } from './client.interface';
 
 export class Auth {
-  public static async getProvider(client: IClient) {
-    client.discovery = await this.discover(client.discoverUrl);
-    const okta = new AuthProvider(client);
-    return okta;
+  private rSecure: AuthProvider;
+
+  constructor(rSecureAddress: string) {
+    this.rSecure = new AuthProvider(rSecureAddress);
   }
 
-  private static async discover(url: string) {
-    return new Promise<IDiscovery>((resolve, reject) => {
-      request.get(url, {
-        json: true
-      }, (err, response, body) => {
-        if (err || response.statusCode !== 200) {
-          return reject(err || response.body);
-        } else {
-          return resolve(body);
+  public async validateAccessToken(accessToken: string, idToken: string) {
+    try {
+      let validatedToken = await this.rSecure.validate(accessToken);
+      if (validatedToken.valid) {
+        return validatedToken;
+      } else if (validatedToken.reason === 'expired') {
+        const newAccessToken = await this.getNewAccessToken(idToken);
+        if (newAccessToken) {
+          validatedToken = await this.rSecure.validate(newAccessToken);
+          return validatedToken;
         }
-      });
-    })
+      }
+    } catch (err) {
+      if (err.reason === 'signature') {
+        return Promise.reject({
+          code: 403,
+          error: err
+        });
+      } else {
+        return Promise.reject({
+          code: 500,
+          error: err
+        });
+      }
+    }
+    return Promise.reject(null);
+  }
+
+  private async getNewAccessToken(idToken: string) {
+    try {
+      return await this.rSecure.getAccessToken(idToken);
+    } catch (err) {
+      if (err.code === 'T000002' || err.code === 'T000003') {
+        return Promise.reject({
+          code: 403,
+          error: err
+        });
+      } else {
+        return Promise.reject({
+          code: 500,
+          error: err
+        });
+      }
+    }
   }
 }

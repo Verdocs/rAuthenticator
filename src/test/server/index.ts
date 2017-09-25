@@ -1,4 +1,4 @@
-import { RealsterOkta as auth, IClient } from '../../';
+import { RealsterOkta as auth } from '../../';
 import * as express from 'express';
 import * as config from 'config';
 import * as expreeCode from 'express-serve-static-core';
@@ -7,17 +7,15 @@ import * as cookieParser from 'cookie-parser';
 const app = express();
 app.use(cookieParser());
 
-const client: IClient = {
-  discoverUrl: config.get<string>('url'),
-  clientId: config.get<string>('clientId'),
-  clientSecret: config.get<string>('clientSecret')
-}
-
-app.use(auth.cookie(client, ['id_token', 'access_token']));
+app.use(auth.cookie(config.get<string>('rSecure_Url'), 'rSecure'));
 
 app.use('/', (req, res) => {
-  let result = req['verifiedCookies'];
-  res.status(200).send(result);
+  let user = req['user'];
+  res.status(200).send(user);
 });
+
+app.use(function (err, req, res, next) {
+  res.status(err.code).send(err.error)
+})
 
 export { app };

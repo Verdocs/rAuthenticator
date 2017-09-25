@@ -1,7 +1,5 @@
 {
-  "url": "",
-  "clientId": "",
-  "clientSecret": "",
+  "rSecure_Url": "",
   "testAccessToken": "",
   "testIdToken": ""
 }

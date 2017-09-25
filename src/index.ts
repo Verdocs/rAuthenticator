@@ -1,42 +1,35 @@
 import { Auth } from './lib';
 import * as jwtdecode from 'jwt-decode';
 
-import { IClient } from './lib/client.interface';
+import { IValidResponse } from './lib/client.interface';
 
 class RealsterOkta {
-  public static cookie(client: IClient, tokenNames: string[]) {
-    return function (req, res, next) {
-      Auth.getProvider(client).then(async (auth) => {
-        const result = [];
-        try {
-          for (const tokenName of tokenNames) {
-            const token = req.cookies[tokenName];
-            const verifiedToken = await auth.verify(token, tokenName);
-            if (verifiedToken) {
-              result.push({
-                name: tokenName,
-                verified: true,
-                decoded: jwtdecode(token)
-              });
-            } else {
-              result.push({
-                name: tokenName,
-                verified: false,
-                decoded: null
-              });
-            }
+  public static cookie(rSecureAddress: string, cookieName: string) {
+    return async (req, res, next) => {
+      const auth = new Auth(rSecureAddress);
+      let cookieValue: any;
+      let accessToken: string;
+      let idToken: string;
+      try {
+        cookieValue = JSON.parse(req.cookies[cookieName]);
+        accessToken = cookieValue['access_token'];
+        idToken = cookieValue['id_token'];
+        const validatedAccesstoken = await auth.validateAccessToken(accessToken, idToken);
+        if (validatedAccesstoken) {
+          if (validatedAccesstoken.token !== accessToken) {
+            res.set('X-Access_Token', validatedAccesstoken.token);
           }
-          req.verifiedCookies = result;
+          req.user = { access_token: validatedAccesstoken.payload };
           next();
-        } catch (err) {
-          next({
-            code: 500,
-            error: err
-          });
         }
-      });
+      } catch (err) {
+        return next({
+          code: err.code,
+          error: err.error
+        });
+      }
     }
   }
 }
 
-export { IClient, RealsterOkta };
+export { RealsterOkta };
