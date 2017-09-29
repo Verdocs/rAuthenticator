@@ -3,7 +3,7 @@ import * as jwtdecode from 'jwt-decode';
 
 import { IValidResponse } from './lib/client.interface';
 
-class RealsterOkta {
+class rSecure {
   public static cookie(rSecureAddress: string, cookieName: string) {
     return async (req, res, next) => {
       const auth = new Auth(rSecureAddress);
@@ -32,4 +32,4 @@ class RealsterOkta {
   }
 }
 
-export { RealsterOkta };
+export { rSecure };

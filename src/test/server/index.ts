@@ -1,4 +1,4 @@
-import { RealsterOkta as auth } from '../../';
+import { rSecure as auth } from '../../';
 import * as express from 'express';
 import * as config from 'config';
 import * as expreeCode from 'express-serve-static-core';

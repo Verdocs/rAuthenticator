@@ -1,18 +1,17 @@
 Under development, don't use
 
-# Realster Okta Middleware
-This module is a middleware for express to verify tokens with interospect of okta
+# Realster rSecure Middleware
+This module is a middleware for express to verify tokens with rSecure
 
 ## Usage
 ```javascript
 const app = express();
 app.use(cookieParser());
 
-const client: IClient = {
-  discoverUrl: 'oAuth disvoery url goes here',
-  clientId: 'clientId for using in interospect call',
-  clientSecret: 'clientSecret for using in interospect call'
-}
+app.use(auth.cookie(config.get<string>('rSecure_Url'), 'rSecure'));
 
-app.use(auth.cookie(client, ['id_token', 'access_token']));
+app.use('/', (req, res) => {
+  let user = req['user'];
+  res.status(200).send(user);
+});
 ```
