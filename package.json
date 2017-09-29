@@ -1,5 +1,5 @@
 {
-  "name": "rAuthenticator",
+  "name": "rauthenticator",
   "version": "0.0.1-beta.5",
   "description": "This module is a middleware for express to verify tokens with endpoint of rSecure",
   "author": "",
