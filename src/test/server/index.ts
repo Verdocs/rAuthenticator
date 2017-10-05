@@ -5,7 +5,7 @@ import * as expreeCode from 'express-serve-static-core';
 
 const app = express();
 
-app.use(auth.cookie(config.get<string>('rSecure_Url')));
+app.use(auth.header(config.get<string>('rSecure_Url')));
 
 app.use('/', (req, res) => {
   let user = req['user'];
@@ -14,6 +14,6 @@ app.use('/', (req, res) => {
 
 app.use(function (err, req, res, next) {
   res.status(err.code).send(err.error)
-})
+});
 
 export { app };

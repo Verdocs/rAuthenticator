@@ -5,7 +5,7 @@ import * as jwtdecode from 'jwt-decode';
 import { IValidResponse } from './lib/client.interface';
 
 class rSecure {
-  public static cookie(rSecureAddress: string) {
+  public static header(rSecureAddress: string) {
     return async (req: express.Request, res: express.Response, next: express.NextFunction) => {
       const authorizationHeader = req.header('authorization') as string;
       const authenticationHeader = req.header('authentication') as string;
