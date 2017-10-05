@@ -86,6 +86,22 @@ describe('Test Express Server', () => {
       });
   });
 
+  it('Should do nothing without tokens', (done) => {
+    supertest(app)
+      .get('/')
+      .expect(200)
+      .end((err, response) => {
+        if (err) {
+          return done(err);
+        } else {
+          const body = response.body;
+          chai.expect(body.accessToken).to.not.exist;
+          chai.expect(body.idToken).to.not.exist;
+          done();
+        }
+      });
+  });
+
   it('Should return tokens', (done) => {
     supertest(app)
       .get('/')
