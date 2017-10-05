@@ -14,12 +14,16 @@ class rSecure {
         let accessToken = authorizationHeader.split(' ')[1];
         let idToken = authenticationHeader.split(' ')[1];
         try {
+          const validateIdToken = await auth.validateIdToken(idToken);
           const validatedAccesstoken = await auth.validateAccessToken(accessToken, idToken);
           if (validatedAccesstoken) {
             if (validatedAccesstoken.token !== accessToken) {
-              res.set('X-Access_Token', validatedAccesstoken.token);
+              res.set('X-Access-Token', validatedAccesstoken.token);
             }
-            req['user'] = { access_token: validatedAccesstoken.payload };
+            req['user'] = { 
+              accessToken: validatedAccesstoken.payload,
+              idToken: validateIdToken.payload
+            };
             next();
           }
         } catch (err) {

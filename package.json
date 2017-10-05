@@ -1,6 +1,6 @@
 {
   "name": "rauthenticator",
-  "version": "0.0.1-beta.6",
+  "version": "0.0.1-beta.7",
   "description": "This module is a middleware for express to verify tokens with endpoint of rSecure",
   "author": "",
   "repository": {

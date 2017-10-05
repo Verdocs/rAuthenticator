@@ -29,10 +29,48 @@ describe('Test Express Server', () => {
     });
   });
 
-  it('Should return error', (done) => {
+  it('Should return error on invalid Access Token and Id Token', (done) => {
     supertest(app)
       .get('/')
       .set('authorization', `Bearer 1234`)
+      .set('authentication', `Bearer 1234`)
+      .expect(403)
+      .end((err, response) => {
+        if (err) {
+          return done(err);
+        } else {
+          const body = response.body;
+          chai.expect(response.statusCode).to.be.equal(403);
+          chai.expect(body.valid).to.be.equal(false);
+          chai.expect(body.reason).to.be.equal('signature');
+          done();
+        }
+      });
+  });
+
+  it('Should return error on invalid Access Token', (done) => {
+    supertest(app)
+      .get('/')
+      .set('authorization', `Bearer ${accessToken}`)
+      .set('authentication', `Bearer 1234`)
+      .expect(403)
+      .end((err, response) => {
+        if (err) {
+          return done(err);
+        } else {
+          const body = response.body;
+          chai.expect(response.statusCode).to.be.equal(403);
+          chai.expect(body.valid).to.be.equal(false);
+          chai.expect(body.reason).to.be.equal('signature');
+          done();
+        }
+      });
+  });
+
+  it('Should return error on invalid Id Token', (done) => {
+    supertest(app)
+      .get('/')
+      .set('authorization', `Bearer ${idToken}`)
       .set('authentication', `Bearer 1234`)
       .expect(403)
       .end((err, response) => {
@@ -60,7 +98,8 @@ describe('Test Express Server', () => {
         } else {
           const body = response.body;
           chai.expect(response.statusCode).to.be.equal(200);
-          chai.expect(body.access_token).to.be.exist;
+          chai.expect(body.accessToken).to.be.exist;
+          chai.expect(body.idToken).to.be.exist;
           done();
         }
       });

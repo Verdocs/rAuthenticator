@@ -39,6 +39,18 @@ export class Auth {
     return Promise.reject(null);
   }
 
+  public async validateIdToken(idToken: string) {
+    try {
+      const validatedToken = await this.rSecure.validate(idToken);
+      return validatedToken;
+    } catch (err) {
+      return Promise.reject({
+        code: 403,
+        error: err
+      });
+    }
+  }
+
   private async getNewAccessToken(idToken: string) {
     try {
       return await this.rSecure.getAccessToken(idToken);
