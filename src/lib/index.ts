@@ -16,12 +16,17 @@ export class Auth {
       let validatedToken = await this.rSecure.validate(accessToken);
       if (validatedToken.valid) {
         return validatedToken;
-      } else if (validatedToken.reason === 'expired') {
+      } else if (validatedToken.reason === 'expired' && idToken) {
         const newAccessToken = await this.getNewAccessToken(idToken);
         if (newAccessToken) {
           validatedToken = await this.rSecure.validate(newAccessToken);
           return validatedToken;
         }
+      } else{
+        return Promise.reject({
+          code: 403,
+          error: 'Cannot get new'
+        })
       }
     } catch (err) {
       if (err.reason === 'signature') {

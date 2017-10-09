@@ -120,4 +120,40 @@ describe('Test Express Server', () => {
         }
       });
   });
+
+  it('Should return accessToken if idToken missing', (done) => {
+    supertest(app)
+      .get('/')
+      .set('authorization', `Bearer ${accessToken}`)
+      .expect(200)
+      .end((err, response) => {
+        if (err) {
+          return done(err);
+        } else {
+          const body = response.body;
+          chai.expect(response.statusCode).to.be.equal(200);
+          chai.expect(body.accessToken).to.be.exist;
+          chai.expect(body.idToken).to.not.exist;
+          done();
+        }
+      });
+  });
+
+  it('Should return idToken if accessToken missing', (done) => {
+    supertest(app)
+      .get('/')
+      .set('authentication', `Bearer ${idToken}`)      
+      .expect(200)
+      .end((err, response) => {
+        if (err) {
+          return done(err);
+        } else {
+          const body = response.body;
+          chai.expect(response.statusCode).to.be.equal(200);
+          chai.expect(body.accessToken).to.not.exist;
+          chai.expect(body.idToken).to.be.exist;
+          done();
+        }
+      });
+  });
 })
