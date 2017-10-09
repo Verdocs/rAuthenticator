@@ -1,8 +1,8 @@
 {
   "name": "rauthenticator",
-  "version": "0.0.1-beta.7",
+  "version": "0.0.1-beta.8",
   "description": "This module is a middleware for express to verify tokens with endpoint of rSecure",
-  "author": "",
+  "author": "AmirSaber Sharifi",
   "repository": {
     "type": "git",
     "url": "https://github.com/Realster/rAuthenticator"

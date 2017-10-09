@@ -5,4 +5,5 @@ package-lock.json
 tsconfig.json
 src
 dist/test
-dist/lib
+config
+.vscode
