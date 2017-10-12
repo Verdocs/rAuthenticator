@@ -36,6 +36,7 @@ class rSecure {
             user.accessToken = validatedAccesstoken
           }
         }
+        res.set('Access-Control-Expose-Headers', 'X-Access-Token, X-Id-Token');
         req['user'] = user;
         next();
       } catch (err) {
