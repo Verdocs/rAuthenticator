@@ -4,14 +4,22 @@ import { IValidResponse } from './client.interface';
 
 export class AuthProvider {
   private rSecureAddress: string;
+  private clientId: string;
+  private clientSecret: string;
 
-  constructor(client: string) {
+  constructor(client: string, clientId: string, clientSecret: string) {
     this.rSecureAddress = client;
+    this.clientId = clientId;
+    this.clientSecret = clientSecret;
   }
 
   public async getAccessToken(access_token: string) {
     return new Promise<string>((resolve, reject) => {
       request.post(this.rSecureAddress + `/token/get_access_token`, {
+        headers: {
+          'client_id': this.clientId,
+          'client_secret': this.clientSecret
+        },
         json: true,
         body: {
           token: access_token
@@ -29,6 +37,10 @@ export class AuthProvider {
   public async getIdToken(id_token: string) {
     return new Promise<string>((resolve, reject) => {
       request.post(this.rSecureAddress + `/token/get_id_token`, {
+        headers: {
+          'client_id': this.clientId,
+          'client_secret': this.clientSecret
+        },
         json: true,
         body: {
           token: id_token

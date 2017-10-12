@@ -1,5 +1,7 @@
 {
   "rSecure_Url": "",
+  "rSecure_client_id": "",
+  "rSecure_client_secret": "",
   "testAccount_username": "",
   "testAccount_password": ""
 }

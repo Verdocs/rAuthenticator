@@ -7,8 +7,8 @@ import { IValidResponse } from './client.interface';
 export class Auth {
   private rSecure: AuthProvider;
 
-  constructor(rSecureAddress: string) {
-    this.rSecure = new AuthProvider(rSecureAddress);
+  constructor(rSecureAddress: string, clientId: string, clientSecret: string) {
+    this.rSecure = new AuthProvider(rSecureAddress, clientId, clientSecret);
   }
 
   public async validateAccessToken(accessToken: string) {

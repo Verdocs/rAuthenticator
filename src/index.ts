@@ -5,7 +5,7 @@ import * as jwtdecode from 'jwt-decode';
 import { IValidResponse } from './lib/client.interface';
 
 class rSecure {
-  public static header(rSecureAddress: string) {
+  public static header(rSecureAddress: string, clientId: string, clientSecret: string) {
     return async (req: express.Request, res: express.Response, next: express.NextFunction) => {
       try {
         const authorizationHeader = req.header('authorization') as string;
@@ -15,7 +15,7 @@ class rSecure {
           idToken: null
         }
         let idToken, validateIdToken, accessToken, validatedAccesstoken;
-        const auth = new Auth(rSecureAddress);
+        const auth = new Auth(rSecureAddress, clientId, clientSecret);
         if (authenticationHeader) {
           idToken = authenticationHeader.split(' ')[1];
           validateIdToken = await auth.validateIdToken(idToken);

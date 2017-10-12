@@ -5,7 +5,7 @@ import * as expreeCode from 'express-serve-static-core';
 
 const app = express();
 
-app.use(auth.header(config.get<string>('rSecure_Url')));
+app.use(auth.header(config.get<string>('rSecure_Url'), config.get<string>('rSecure_client_id'), config.get<string>('rSecure_client_secret')));
 
 app.use('/', (req, res) => {
   let user = req['user'];
