@@ -19,7 +19,12 @@ class rSecure {
         if (authenticationHeader) {
           idToken = authenticationHeader.split(' ')[1];
           validateIdToken = await auth.validateIdToken(idToken);
-          user.idToken = validateIdToken;
+          if (validateIdToken) {
+            if (validateIdToken.token !== idToken) {
+              res.set('X-Id-Token', validateIdToken.token);
+            }
+            user.idToken = validateIdToken
+          }
         }
         if (authorizationHeader) {
           accessToken = authorizationHeader.split(' ')[1];
