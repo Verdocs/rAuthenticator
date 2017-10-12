@@ -9,15 +9,35 @@ export class AuthProvider {
     this.rSecureAddress = client;
   }
 
-  public async getAccessToken(id_token: string) {
+  public async getAccessToken(access_token: string) {
     return new Promise<string>((resolve, reject) => {
-      request.get(this.rSecureAddress + `/token/accessToken?id_token=${id_token}`, {
-        json: true
+      request.post(this.rSecureAddress + `/token/get_access_token`, {
+        json: true,
+        body: {
+          token: access_token
+        }
       }, (err, response, body) => {
         if (err || response.statusCode !== 200) {
           return reject(err || response.body);
         } else {
-          resolve(body.access_token);
+          resolve(body.accessToken);
+        }
+      });
+    });
+  }
+
+  public async getIdToken(id_token: string) {
+    return new Promise<string>((resolve, reject) => {
+      request.post(this.rSecureAddress + `/token/get_id_token`, {
+        json: true,
+        body: {
+          token: id_token
+        }
+      }, (err, response, body) => {
+        if (err || response.statusCode !== 200) {
+          return reject(err || response.body);
+        } else {
+          resolve(body.idToken);
         }
       });
     });

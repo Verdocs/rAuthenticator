@@ -23,7 +23,7 @@ class rSecure {
         }
         if (authorizationHeader) {
           accessToken = authorizationHeader.split(' ')[1];
-          validatedAccesstoken = await auth.validateAccessToken(accessToken, idToken);
+          validatedAccesstoken = await auth.validateAccessToken(accessToken);
           if (validatedAccesstoken) {
             if (validatedAccesstoken.token !== accessToken) {
               res.set('X-Access-Token', validatedAccesstoken.token);

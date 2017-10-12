@@ -11,18 +11,18 @@ export class Auth {
     this.rSecure = new AuthProvider(rSecureAddress);
   }
 
-  public async validateAccessToken(accessToken: string, idToken: string) {
+  public async validateAccessToken(accessToken: string) {
     try {
       let validatedToken = await this.rSecure.validate(accessToken);
       if (validatedToken.valid) {
         return validatedToken;
-      } else if (validatedToken.reason === 'expired' && idToken) {
-        const newAccessToken = await this.getNewAccessToken(idToken);
+      } else if (validatedToken.reason === 'expired') {
+        const newAccessToken = await this.getNewAccessToken(accessToken);
         if (newAccessToken) {
           validatedToken = await this.rSecure.validate(newAccessToken);
           return validatedToken;
         }
-      } else{
+      } else {
         return Promise.reject({
           code: 403,
           error: 'Cannot get new'
@@ -46,19 +46,58 @@ export class Auth {
 
   public async validateIdToken(idToken: string) {
     try {
-      const validatedToken = await this.rSecure.validate(idToken);
-      return validatedToken;
+      let validatedToken = await this.rSecure.validate(idToken);
+      if (validatedToken.valid) {
+        return validatedToken;
+      } else if (validatedToken.reason === 'expired') {
+        const newAccessToken = await this.getNewIdToken(idToken);
+        if (newAccessToken) {
+          validatedToken = await this.rSecure.validate(newAccessToken);
+          return validatedToken;
+        }
+      } else {
+        return Promise.reject({
+          code: 403,
+          error: 'Cannot get new'
+        })
+      }
     } catch (err) {
-      return Promise.reject({
-        code: 403,
-        error: err
-      });
+      if (err.reason === 'signature') {
+        return Promise.reject({
+          code: 403,
+          error: err
+        });
+      } else {
+        return Promise.reject({
+          code: 500,
+          error: err
+        });
+      }
+    }
+    return Promise.reject(null);
+  }
+
+  private async getNewAccessToken(accessToken: string) {
+    try {
+      return await this.rSecure.getAccessToken(accessToken);
+    } catch (err) {
+      if (err.code === 'T000002' || err.code === 'T000003') {
+        return Promise.reject({
+          code: 403,
+          error: err
+        });
+      } else {
+        return Promise.reject({
+          code: 500,
+          error: err
+        });
+      }
     }
   }
 
-  private async getNewAccessToken(idToken: string) {
+  private async getNewIdToken(idToken: string) {
     try {
-      return await this.rSecure.getAccessToken(idToken);
+      return await this.rSecure.getIdToken(idToken);
     } catch (err) {
       if (err.code === 'T000002' || err.code === 'T000003') {
         return Promise.reject({
