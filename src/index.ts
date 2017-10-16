@@ -12,7 +12,8 @@ class rSecure {
         const authenticationHeader = req.header('authentication') as string;
         let user = {
           accessToken: null,
-          idToken: null
+          idToken: null,
+          clientToken: null
         }
         let idToken, validateIdToken, accessToken, validatedAccesstoken;
         const auth = new Auth(rSecureAddress, clientId, clientSecret);
@@ -23,7 +24,7 @@ class rSecure {
             if (validateIdToken.token !== idToken) {
               res.set('X-Id-Token', validateIdToken.token);
             }
-            user.idToken = validateIdToken
+            user.idToken = validateIdToken;
           }
         }
         if (authorizationHeader) {
@@ -33,7 +34,16 @@ class rSecure {
             if (validatedAccesstoken.token !== accessToken) {
               res.set('X-Access-Token', validatedAccesstoken.token);
             }
-            user.accessToken = validatedAccesstoken
+            if (validatedAccesstoken.payload.gty === 'client-credentials') {
+              user.clientToken = validatedAccesstoken;
+              user.accessToken = {
+                payload:{
+                  sub: req.header('user-id')
+                }
+              }
+            } else {
+              user.accessToken = validatedAccesstoken;
+            }
           }
         }
         res.set('Access-Control-Expose-Headers', 'X-Access-Token, X-Id-Token');
