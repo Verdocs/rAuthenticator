@@ -1,6 +1,6 @@
 export interface IValidResponse {
-  valid: Boolean;
+  valid: boolean;
   payload?: any;
   reason?: string;
-  token: string;
+  token?: string;
 }

@@ -10,9 +10,5 @@
             "es6"
         ],
         "outDir": "dist"
-    },
-    "files": [
-        "src/index.ts",
-        "src/test/server.test.ts"
-    ]
+    }
 }
