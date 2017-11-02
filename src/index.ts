@@ -6,7 +6,7 @@ import { IValidResponse } from "./client.interface";
 
 class RAuthenticator {
   private static auth: AuthProvider;
-  public static async header(rSecureAddress: string, clientId: string, clientSecret: string) {
+  public static header(rSecureAddress: string, clientId: string, clientSecret: string) {
     RAuthenticator.auth = new AuthProvider(rSecureAddress, clientId, clientSecret);
     return RAuthenticator.middleware;
   }
