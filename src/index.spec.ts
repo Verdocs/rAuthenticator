@@ -19,20 +19,16 @@ describe("RAuthenticator", () => {
       }
     }
 
-    RAuthenticator.header(null, null, null)
-      .then((middleware) => {
-        middleware(req, null, (err) => {
-          try {
-            expect(err).to.exist;
-            expect(err.code).to.eq(400);
-            done();
-          } catch (err) {
-            done(err);
-          }
-        });
-      }).catch((err) => {
+    const middleware = RAuthenticator.header(null, null, null)
+    middleware(req, null, (err) => {
+      try {
+        expect(err).to.exist;
+        expect(err.code).to.eq(400);
+        done();
+      } catch (err) {
         done(err);
-      });
+      }
+    });
   });
 
   it("Should call next with 403 error with bad token", (done) => {
@@ -47,20 +43,16 @@ describe("RAuthenticator", () => {
       }
     }
 
-    RAuthenticator.header(null, null, null)
-      .then((middleware) => {
-        middleware(req, null, (err) => {
-          try {
-            expect(err).to.exist;
-            expect(err.code).to.eq(403);
-            done();
-          } catch (err) {
-            done(err);
-          }
-        });
-      }).catch((err) => {
+    const middleware = RAuthenticator.header(null, null, null)
+    middleware(req, null, (err) => {
+      try {
+        expect(err).to.exist;
+        expect(err.code).to.eq(403);
+        done();
+      } catch (err) {
         done(err);
-      });
+      }
+    });
   });
 
   it("Should call next with 500 error in network error", (done) => {
@@ -72,20 +64,16 @@ describe("RAuthenticator", () => {
       }
     }
 
-    RAuthenticator.header(null, null, null)
-      .then((middleware) => {
-        middleware(req, null, (err) => {
-          try {
-            expect(err).to.exist;
-            expect(err.code).to.eq(500);
-            done();
-          } catch (err) {
-            done(err);
-          }
-        });
-      }).catch((err) => {
+    const middleware = RAuthenticator.header(null, null, null)
+    middleware(req, null, (err) => {
+      try {
+        expect(err).to.exist;
+        expect(err.code).to.eq(500);
+        done();
+      } catch (err) {
         done(err);
-      });
+      }
+    });
   });
 
   it("Should call next without error with good token password grant type", (done) => {
@@ -105,24 +93,20 @@ describe("RAuthenticator", () => {
       }
     }
 
-    RAuthenticator.header(null, null, null)
-      .then((middleware) => {
-        middleware(req, null, (err) => {
-          try {
-            expect(err).to.not.exist;
-            expect(req.user).to.exist;
-            expect(req.user.accessToken).to.be.eq(tokenResult);
-            expect(req.user.clientToken).to.be.eq(null);
-            expect(req.user.idToken).to.be.eq(tokenResult);
-            expect(req.user.id).to.be.eq(tokenResult.payload.sub);
-            done();
-          } catch (err) {
-            done(err);
-          }
-        });
-      }).catch((err) => {
+    const middleware = RAuthenticator.header(null, null, null)
+    middleware(req, null, (err) => {
+      try {
+        expect(err).to.not.exist;
+        expect(req.user).to.exist;
+        expect(req.user.accessToken).to.be.eq(tokenResult);
+        expect(req.user.clientToken).to.be.eq(null);
+        expect(req.user.idToken).to.be.eq(tokenResult);
+        expect(req.user.id).to.be.eq(tokenResult.payload.sub);
+        done();
+      } catch (err) {
         done(err);
-      });
+      }
+    });
   });
 
   it("Should call next without error with good token client grant type", (done) => {
@@ -142,24 +126,20 @@ describe("RAuthenticator", () => {
       }
     }
 
-    RAuthenticator.header(null, null, null)
-      .then((middleware) => {
-        middleware(req, null, (err) => {
-          try {
-            expect(err).to.not.exist;
-            expect(req.user).to.exist;
-            expect(req.user.accessToken.payload.sub).to.be.eq("B user-id");
-            expect(req.user.idToken).to.be.eq(tokenResult);
-            expect(req.user.clientToken).to.be.eq(tokenResult);
-            expect(req.user.id).to.be.eq("B user-id");
-            done();
-          } catch (err) {
-            done(err);
-          }
-        });
-      }).catch((err) => {
+    const middleware = RAuthenticator.header(null, null, null)
+    middleware(req, null, (err) => {
+      try {
+        expect(err).to.not.exist;
+        expect(req.user).to.exist;
+        expect(req.user.accessToken.payload.sub).to.be.eq("B user-id");
+        expect(req.user.idToken).to.be.eq(tokenResult);
+        expect(req.user.clientToken).to.be.eq(tokenResult);
+        expect(req.user.id).to.be.eq("B user-id");
+        done();
+      } catch (err) {
         done(err);
-      });
+      }
+    });
   });
 
   afterEach(() => {
