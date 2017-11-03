@@ -109,6 +109,78 @@ describe("RAuthenticator", () => {
     });
   });
 
+  it("Should call next without error with good token password grant type, no id token", (done) => {
+    const tokenResult = {
+      valid: true,
+      token: "fakeToken",
+      payload: {
+        sub: "fakesub",
+        gty: "password"
+      }
+    };
+    const validateStub = sandbox.stub(AuthProvider.prototype, "validate");
+    validateStub.resolves(tokenResult);
+    const req: any = {
+      header: (name) => {
+        if (name === "authentication") {
+          return null;
+        }
+        return "B " + name;
+      }
+    }
+
+    const middleware = RAuthenticator.header(null, null, null)
+    middleware(req, null, (err) => {
+      try {
+        expect(err).to.not.exist;
+        expect(req.user).to.exist;
+        expect(req.user.accessToken).to.be.eq(tokenResult);
+        expect(req.user.clientToken).to.be.eq(null);
+        expect(req.user.idToken).to.be.eq(null);
+        expect(req.user.id).to.be.eq(tokenResult.payload.sub);
+        done();
+      } catch (err) {
+        done(err);
+      }
+    });
+  });
+
+  it("Should call next without error with good token password grant type, no access token", (done) => {
+    const tokenResult = {
+      valid: true,
+      token: "fakeToken",
+      payload: {
+        sub: "fakesub",
+        gty: "password"
+      }
+    };
+    const validateStub = sandbox.stub(AuthProvider.prototype, "validate");
+    validateStub.resolves(tokenResult);
+    const req: any = {
+      header: (name) => {
+        if (name === "authorization") {
+          return null;
+        }
+        return "B " + name;
+      }
+    }
+
+    const middleware = RAuthenticator.header(null, null, null)
+    middleware(req, null, (err) => {
+      try {
+        expect(err).to.not.exist;
+        expect(req.user).to.exist;
+        expect(req.user.accessToken).to.be.eq(null);
+        expect(req.user.clientToken).to.be.eq(null);
+        expect(req.user.idToken).to.be.eq(tokenResult);
+        expect(req.user.id).to.be.eq(null);
+        done();
+      } catch (err) {
+        done(err);
+      }
+    });
+  });
+
   it("Should call next without error with good token client grant type", (done) => {
     const tokenResult = {
       valid: true,

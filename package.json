@@ -14,7 +14,13 @@
     "start": "node dist/index.js",
     "build": "tsc",
     "tsc:watch": "tsc -w",
-    "test": "npm run build && NODE_ENV=test mocha dist/**/*.spec.js"
+    "test": "npm run build && NODE_ENV=test mocha dist/**/*.spec.js",
+    "nyc": "nyc --reporter=html --reporter=text npm test"
+  },
+  "nyc": {
+    "exclude": [
+      "dist/**/*.spec.js"
+    ]
   },
   "license": "ISC",
   "dependencies": {
@@ -35,6 +41,7 @@
     "express": "^4.15.4",
     "lodash": "^4.17.4",
     "mocha": "^3.5.0",
+    "nyc": "^11.3.0",
     "sinon": "^4.0.2",
     "supertest": "^3.0.0",
     "typescript": "^2.5.2"
