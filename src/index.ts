@@ -30,7 +30,7 @@ class RAuthenticator {
           user.accessToken = {
             payload: {
               sub: req.header("user-id"),
-              'https://gorealster.com/profile_id': req.header("profile-id")
+              'https://realster.io/profile_id': req.header("profile-id")
             },
           };
         } else {
