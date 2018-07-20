@@ -53,6 +53,12 @@ class RAuthenticator {
       try {
         const validatedToken = await RAuthenticator.auth.validate(token);
         if (validatedToken.valid) {
+          if (validatedToken.payload.hasOwnProperty('email_verified') && !validatedToken.payload.email_verified ) {
+            return Promise.reject({
+              code: 401,
+              error: 'email is not verified'
+            });
+          }
           return validatedToken;
         } else {
           return Promise.reject({
