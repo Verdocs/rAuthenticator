@@ -31,7 +31,8 @@ class RAuthenticator {
             payload: {
               sub: req.header("user-id"),
               'https://realster.io/profile_id': req.header("profile-id"),
-              'https://realster.io/permissions': req.header("permissions") ? req.header("permissions").split(",") : ""
+              'https://realster.io/permissions': req.header("permissions") ? req.header("permissions").split(",") : '',
+              'https://realster.io/organization_id': req.header("organization-id")
             },
           };
         } else {
