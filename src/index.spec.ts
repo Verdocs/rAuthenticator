@@ -19,7 +19,7 @@ describe("RAuthenticator", () => {
       }
     }
 
-    const middleware = RAuthenticator.header(null, null, null)
+    const middleware = RAuthenticator.header(null, null, null, null)
     middleware(req, null, (err) => {
       try {
         expect(err).to.exist;
@@ -43,7 +43,7 @@ describe("RAuthenticator", () => {
       }
     }
 
-    const middleware = RAuthenticator.header(null, null, null)
+    const middleware = RAuthenticator.header(null, null, null, null)
     middleware(req, null, (err) => {
       try {
         expect(err).to.exist;
@@ -64,7 +64,7 @@ describe("RAuthenticator", () => {
       }
     }
 
-    const middleware = RAuthenticator.header(null, null, null)
+    const middleware = RAuthenticator.header(null, null, null, null)
     middleware(req, null, (err) => {
       try {
         expect(err).to.exist;
@@ -93,7 +93,7 @@ describe("RAuthenticator", () => {
       }
     }
 
-    const middleware = RAuthenticator.header(null, null, null)
+    const middleware = RAuthenticator.header(null, null, null, null)
     middleware(req, null, (err) => {
       try {
         expect(err).to.not.exist;
@@ -129,7 +129,7 @@ describe("RAuthenticator", () => {
       }
     }
 
-    const middleware = RAuthenticator.header(null, null, null)
+    const middleware = RAuthenticator.header(null, null, null, null)
     middleware(req, null, (err) => {
       try {
         expect(err).to.not.exist;
@@ -165,7 +165,7 @@ describe("RAuthenticator", () => {
       }
     }
 
-    const middleware = RAuthenticator.header(null, null, null)
+    const middleware = RAuthenticator.header(null, null, null, null)
     middleware(req, null, (err) => {
       try {
         expect(err).to.not.exist;
@@ -198,7 +198,7 @@ describe("RAuthenticator", () => {
       }
     }
 
-    const middleware = RAuthenticator.header(null, null, null)
+    const middleware = RAuthenticator.header(null, null, null, null)
     middleware(req, null, (err) => {
       try {
         expect(err).to.not.exist;

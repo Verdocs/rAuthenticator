@@ -1,15 +1,17 @@
 import * as express from "express";
-import * as jwtdecode from "jwt-decode";
 
 import { AuthProvider } from "./auth-provider";
 import { IValidResponse } from "./client.interface";
 
 class RAuthenticator {
   private static auth: AuthProvider;
-  public static header(rSecureAddress: string, clientId: string, clientSecret: string) {
+  private static tokenNamespace: string;
+  public static header(rSecureAddress: string, clientId: string, clientSecret: string, tokenNamespace: string) {
     RAuthenticator.auth = new AuthProvider(rSecureAddress, clientId, clientSecret);
+    RAuthenticator.tokenNamespace = tokenNamespace;
     return RAuthenticator.middleware;
   }
+
   private static async middleware(req: express.Request, res: express.Response, next: express.NextFunction) {
     try {
       const authorizationHeader = req.header("authorization") as string;
@@ -24,19 +26,20 @@ class RAuthenticator {
         user.idToken = await RAuthenticator.validateHeaderToken(authenticationHeader);
       }
       if (authorizationHeader) {
-        const validatedAccesstoken = await RAuthenticator.validateHeaderToken(authorizationHeader);
-        if (validatedAccesstoken.payload.gty === "client-credentials") {
-          user.clientToken = validatedAccesstoken;
+        const validatedAccessToken = await RAuthenticator.validateHeaderToken(authorizationHeader);
+        if (validatedAccessToken.payload.gty === "client-credentials") {
+          user.clientToken = validatedAccessToken;
           user.accessToken = {
             payload: {
-              sub: req.header("user-id"),
-              'https://realster.io/profile_id': req.header("profile-id"),
-              'https://realster.io/permissions': req.header("permissions") ? req.header("permissions").split(",") : '',
-              'https://realster.io/organization_id': req.header("organization-id")
-            },
+              sub: req.header("user-id")
+            }
           };
+          user.accessToken.payload[`${RAuthenticator.tokenNamespace}/profile_id`] = req.header("profile-id");
+          user.accessToken.payload[`${RAuthenticator.tokenNamespace}/permissions`] = req.header("permissions") ? req.header("permissions").split(",") : '';
+          user.accessToken.payload[`${RAuthenticator.tokenNamespace}/organization_id`] = req.header("organization-id");
+
         } else {
-          user.accessToken = validatedAccesstoken;
+          user.accessToken = validatedAccessToken;
         }
         user.id = user.accessToken.payload.sub;
       }
@@ -54,7 +57,7 @@ class RAuthenticator {
       try {
         const validatedToken = await RAuthenticator.auth.validate(token);
         if (validatedToken.valid) {
-          if (validatedToken.payload.hasOwnProperty('email_verified') && !validatedToken.payload.email_verified ) {
+          if (validatedToken.payload.hasOwnProperty('email_verified') && !validatedToken.payload.email_verified) {
             return Promise.reject({
               code: 401,
               error: 'email is not verified'
