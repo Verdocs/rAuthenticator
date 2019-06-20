@@ -31,12 +31,12 @@ class RAuthenticator {
           user.clientToken = validatedAccessToken;
           user.accessToken = {
             payload: {
-              sub: req.header("user-id")
+              sub: req.header("user-id"),
+              [`${RAuthenticator.tokenNamespace}/profile_id`]: req.header("profile-id"),
+              [`${RAuthenticator.tokenNamespace}/organization_id`]: req.header("organization-id"),
+              [`${RAuthenticator.tokenNamespace}/permissions`]: req.header("permissions") ? req.header("permissions").split(",") : '',
             }
           };
-          user.accessToken.payload[`${RAuthenticator.tokenNamespace}/profile_id`] = req.header("profile-id");
-          user.accessToken.payload[`${RAuthenticator.tokenNamespace}/permissions`] = req.header("permissions") ? req.header("permissions").split(",") : '';
-          user.accessToken.payload[`${RAuthenticator.tokenNamespace}/organization_id`] = req.header("organization-id");
 
         } else {
           user.accessToken = validatedAccessToken;
