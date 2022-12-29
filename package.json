@@ -37,7 +37,7 @@
     "@types/request": "^2.0.3",
     "@types/sinon": "^2.3.7",
     "chai": "^4.1.2",
-    "config": "^1.26.2",
+    "config": "^3.3.8",
     "express": "^4.15.4",
     "lodash": "^4.17.4",
     "mocha": "^3.5.0",
